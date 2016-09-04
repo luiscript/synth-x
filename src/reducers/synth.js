@@ -1,25 +1,23 @@
 import * as types from '../actions/actionTypes';
 import Tone from 'tone';
 
-//creating the synth and stored in the initial state of the reducer
 const initialState = {
+  synthList: [],
 
 };
 
 export default function play( state = initialState, action = {} ){
   switch (action.type) {
     case types.CREATESYNTH:
-      // return {
-      //   ...state,
-      //   tone: osc
-      // }
+      var synth = new Tone.PolySynth(6, Tone.Synth, {
+        "oscillator" : {
+          "partials" : [0, 2, 3, 4],
+        }
+      });
+      state.synthList.push(synth);
       return {
         ...state,
-        synth: new Tone.PolySynth(6, Tone.Synth, {
-      		"oscillator" : {
-      			"partials" : [0, 2, 3, 4],
-      		}
-      	}).toMaster(),
+        synth: synth,
         note: 'C3',
         vel: 100,
       }
@@ -27,6 +25,11 @@ export default function play( state = initialState, action = {} ){
       state.synth.triggerAttackRelease(action.note, "8n");
       return {
         ...state
+      }
+    case types.TRIGGERATTACK:
+      action.tone.triggerAttack(action.note);
+      return {
+
       }
     case types.ENVELOPE:
       var envelope = new Tone.AmplitudeEnvelope({

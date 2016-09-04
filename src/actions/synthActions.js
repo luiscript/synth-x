@@ -20,6 +20,24 @@ export function playNumber() {
   };
 }
 
+export function triggerAttack(){
+  return {
+    type: types.TRIGGERATTACK
+  }
+}
+
+export function triggerRelease(){
+  return {
+    type: types.TRIGGERRELEASE
+  }
+}
+
+export function triggerAttackRelease(){
+  return {
+    type: types.TRIGGERATTACKRELEASE
+  }
+}
+
 export function envelope(freq) {
   return {
     type: types.ENVELOPE,
