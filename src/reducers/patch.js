@@ -51,10 +51,7 @@ export default function newPatch( state = initialState, action = {} ){
             '.outPorts circle': { fill: '#E74C3C', type: 'output' }
         }
       });
-
       state.graph.addCell(m1);
-      console.log("m1", m1);
-
       return {
         ...state,
       }
