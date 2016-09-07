@@ -1,13 +1,14 @@
 import * as types from '../actions/actionTypes';
+import Tone from 'tone';
 
 const initialState = {
   state: Tone.State,
-  bpm: 120
-  swing: 0
-  swingSubdivision: "8n"
-  timeSignature: 4
-  loopStart: 0
-  loopEnd: "4m"
+  bpm: 120,
+  swing: 0,
+  swingSubdivision: "8n",
+  timeSignature: 4,
+  loopStart: 0,
+  loopEnd: "4m",
   PPQ: 192,
   transportEvents: []
 };
@@ -40,9 +41,19 @@ export default function transport( state = initialState, action = {} ){
 
     case types.TRANSPORTSCHEDULE:
 
-      const eventId = Tone.Transport.schedule(action.callback);
-      state.transportEvents.push(eventId);
-      state.state = Tone.State;
+      console.log("schedulr", action);
+      //const eventId = Tone.Transport.schedule(() => {console.log("click")}, action.time);
+
+      // Tone.Transport.schedule(function(time){
+      //     console.log("click");
+      // }, "1m");
+
+      Tone.Transport.scheduleRepeat(function(time){
+          console.log("click");
+      }, "8n", "1m");
+
+      //state.transportEvents.push(eventId);
+      //state.state = Tone.State;
 
       return {
         ...state
@@ -52,6 +63,10 @@ export default function transport( state = initialState, action = {} ){
 
       Tone.Transport.bpm.rampTo(action.bpm, action.ramp);
       state.bpm = action.bpm;
+
+      return {
+        ...state
+      }
 
     default:
 

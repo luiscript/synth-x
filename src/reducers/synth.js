@@ -3,7 +3,9 @@ import Tone from 'tone';
 
 const initialState = {
   synthList: [],
-
+  synth: null,
+  note: 'C3',
+  vel: 100,
 };
 
 export default function play( state = initialState, action = {} ){
@@ -13,7 +15,10 @@ export default function play( state = initialState, action = {} ){
         "oscillator" : {
           "partials" : [0, 2, 3, 4],
         }
-      });
+      }).toMaster();
+
+      console.log("crated synth");
+
       state.synthList.push(synth);
       return {
         ...state,
@@ -22,6 +27,7 @@ export default function play( state = initialState, action = {} ){
         vel: 100,
       }
     case types.PLAYNOTE:
+      console.log("play note", state.synth);
       state.synth.triggerAttackRelease(action.note, "8n");
       return {
         ...state

@@ -1,12 +1,5 @@
 import * as types from './actionTypes';
 
-export function createSynth(settings) {
-  return {
-    type: types.TRANSPORTCREATE,
-    settings: settings
-  };
-}
-
 export function start() {
   return {
     type: types.TRANSPORTSTART
@@ -20,14 +13,16 @@ export function stop() {
   };
 }
 
-export function schedule(callback) {
+export function schedule(data) {
+  console.log("schedule");
   return {
     type: types.TRANSPORTSCHEDULE,
-    callback: callback
+    callback: data.func,
+    time: data.time
   };
 }
 
-export function schedule(bpmData) {
+export function bpm(bpmData) {
   return {
     type: types.TRANSPORTBPM,
     bpm: bpmData.bpm,

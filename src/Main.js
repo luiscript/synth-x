@@ -34,12 +34,12 @@ class Main extends Component {
          blackNotesColour: 'black',
          hoverColour: '#f3e939'
     });
-    keyboard.keyDown = function (note, frequency) {
-		    synthActions.playNote({note: note});
-		};
-		keyboard.keyUp = function () {
-		    synth.triggerRelease();
-		};
+    // keyboard.keyDown = function (note, frequency) {
+		//     synthActions.playNote({note: note});
+		// };
+		// keyboard.keyUp = function () {
+		//     synthActions.triggerRelease();
+		// };
   }
   onTextChange(e){
     this.setState({
@@ -51,6 +51,8 @@ class Main extends Component {
 
     //parse the input text stored in this.state
     var actions = parser.parse(this.state.code);
+
+    console.log("actions", actions);
 
     //catching errors from the parser
     if (actions.error) {
@@ -64,15 +66,29 @@ class Main extends Component {
       synthActions.playNote({note: action.note + action.number});
     }
 
+
   }
   handleNewPatch(){
-    const { synthActions } = this.props;
+    const { transportActions } = this.props;
     // patchActions.newPatch(this.paper);
     // if (true) {
     //
     // }
-    synthActions.envelope();
+    //synthActions.envelope();
 
+    console.log("this", this.props);
+    const func = () => {
+      console.log("click");
+    };
+
+    transportActions.schedule({
+      func: func,
+      time: '1m'
+    });
+
+    transportActions.start();
+
+    console.log("start", this.props);
   }
   handleSlider(e){
     this.setState({
@@ -107,5 +123,6 @@ export default connect(state => ({
   (dispatch) => ({
     patchActions: bindActionCreators(patchActions, dispatch),
     synthActions: bindActionCreators(synthActions, dispatch),
+    transportActions: bindActionCreators(transportActions, dispatch)
   })
 )(Main);
