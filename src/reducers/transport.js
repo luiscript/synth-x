@@ -41,24 +41,30 @@ export default function transport( state = initialState, action = {} ){
 
     case types.TRANSPORTSCHEDULE:
 
-      console.log("schedulr", action);
-      //const eventId = Tone.Transport.schedule(() => {console.log("click")}, action.time);
+      console.log("state", state);
+      state.transportEvents.push(Tone.Transport.schedule(action.callback, action.startTime));
+      state.state = Tone.State;
 
-      // Tone.Transport.schedule(function(time){
-      //     console.log("click");
-      // }, "1m");
+      return {
+        ...state
+      }
+    case types.TRANSPORTSCHEDULEREPEAT:
 
-      Tone.Transport.scheduleRepeat(function(time){
-          console.log("click");
-      }, "8n", "1m");
-
-      //state.transportEvents.push(eventId);
-      //state.state = Tone.State;
+      state.transportEvents.push(Tone.Transport.scheduleRepeat(action.callback, action.time, action.start));
+      state.state = Tone.State;
 
       return {
         ...state
       }
 
+      case types.TRANSPORTSCHEDULEONCE:
+
+        //This event will be removed after it happens, no need to track event
+        Tone.Transport.scheduleOnce(action.callback, action.startTime)
+
+        return {
+          ...state
+        }
     case types.TRANSPORTBPM:
 
       Tone.Transport.bpm.rampTo(action.bpm, action.ramp);

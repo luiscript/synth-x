@@ -14,11 +14,27 @@ export function stop() {
 }
 
 export function schedule(data) {
-  console.log("schedule");
   return {
     type: types.TRANSPORTSCHEDULE,
+    callback: data.callback,
+    startTime: data.startTime
+  };
+}
+
+export function scheduleRepeat(data) {
+  return {
+    type: types.TRANSPORTSCHEDULEREPEAT,
+    callback: data.callback,
+    time: data.time,
+    startTime: data.startTime
+  };
+}
+
+export function scheduleOnce(data) {
+  return {
+    type: types.TRANSPORTSCHEDULEONCE,
     callback: data.func,
-    time: data.time
+    startTime: data.startTime
   };
 }
 

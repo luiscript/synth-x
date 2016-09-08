@@ -52,8 +52,6 @@ class Main extends Component {
     //parse the input text stored in this.state
     var actions = parser.parse(this.state.code);
 
-    console.log("actions", actions);
-
     //catching errors from the parser
     if (actions.error) {
       console.log(actions.error);
@@ -69,21 +67,26 @@ class Main extends Component {
 
   }
   handleNewPatch(){
-    const { transportActions } = this.props;
-    // patchActions.newPatch(this.paper);
-    // if (true) {
-    //
-    // }
-    //synthActions.envelope();
+    const { transportActions, synthActions } = this.props;
 
-    console.log("this", this.props);
     const func = () => {
-      console.log("click");
+      synthActions.playNote({note: 'C4'});
     };
 
-    transportActions.schedule({
-      func: func,
-      time: '1m'
+    const func2 = () => {
+      synthActions.playNote({note: 'C5'});
+    };
+
+    transportActions.scheduleRepeat({
+      callback: func,
+      startTime: '0',
+      time: '4n'
+    });
+
+    transportActions.scheduleRepeat({
+      callback: func2,
+      startTime: '3n',
+      time: '3n'
     });
 
     transportActions.start();
@@ -97,9 +100,9 @@ class Main extends Component {
     const { synthActions, state } = this.props;
     // patchActions.newPatch(this.paper);
 
-    console.log("state", state);
-    synthActions.param(state.synth.oscillator, 'frequency', e.target.value);
-    console.log("frequency", e.target.value);
+    this.props.transportActions.bpm({bpm: e.target.value, ramp: 0});
+    //synthActions.param(state.synth.oscillator, 'frequency', e.target.value);
+    //console.log("frequency", e.target.value);
   }
   render() {
     return (
@@ -109,7 +112,7 @@ class Main extends Component {
         <br />
         <button onClick={this.handleClickButton.bind(this)}>Run</button>
         <button onClick={this.handleNewPatch.bind(this)}>Patch</button>
-        <input type="range" ref="frequency" min="0" max="1000" value={this.state.frequencyValue} onChange={this.handleSlider.bind(this)} />
+        <input type="range" ref="frequency" min="80" max="200" value={this.state.frequencyValue} onChange={this.handleSlider.bind(this)} />
         <div id="keyboard"></div>
         <div ref="placeholder" ></div>
       </div>

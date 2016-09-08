@@ -11,7 +11,9 @@ export const PARAM = 'PARAM';
 
 
 //transport actions
-export const TRANSPORTCREATE      = 'TRANSPORTCREATE';
-export const TRANSPORTSTART       = 'TRANSPORTSTART'
-export const TRANSPORTSTOP        = 'TRANSPORTSTOP';
-export const TRANSPORTSCHEDULE    = 'TRANSPORTSCHEDULE';
+export const TRANSPORTSTART             = 'TRANSPORTSTART'
+export const TRANSPORTSTOP              = 'TRANSPORTSTOP';
+export const TRANSPORTSCHEDULE          = 'TRANSPORTSCHEDULE';
+export const TRANSPORTSCHEDULEREPEAT    = 'TRANSPORTSCHEDULEREPEAT';
+export const TRANSPORTSCHEDULEONCE      = 'TRANSPORTSCHEDULEONCE';
+export const TRANSPORTBPM               = 'TRANSPORTBPM';
