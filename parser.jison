@@ -10,6 +10,7 @@
     yy.chars = 0;
     yy.words = 0;
     yy.lines = 1;
+    yy.prev = 'none'
   }
 %}
 
@@ -17,9 +18,11 @@
 
 \s+                         /* skip whitespace */
 "play"                        return 'PLAY'
+"bpm"                         return 'BPM'
+"sequence"                    return 'SEQUENCE'
 [a-g]|[A-G]                   return 'NOTE'
-[0-6]                         return 'NUMBER'
-([a-g][A-G][0-9])+            return 'ERROR'
+[0-9]+                        return 'NUMBER'
+\"[^"]+\"                     yytext = yytext.slice(1,-1); return 'STRING'
 .                             return 'ERROR'
 <<EOF>>                       return 'EOF'
 
@@ -52,18 +55,54 @@ instructions
 
 instruction
     : play
+    | bpm
+    | sequence
+    ;
+
+sequence
+    : SEQUENCE STRING NUMBER {
+      yy.prev = 'sequence';
+      yy.instructions.push({
+        action: $1,
+        time: $2,
+        start: $3,
+        instructions: new Array()
+      });
+    }
     ;
 
 play
     : PLAY NOTE NUMBER {
+        console.log("BEFORE", $$);
+        if ( yy.prev == 'sequence'){
+          var index = yy.instructions.length - 1;
+          yy.instructions[index].instructions.push({
+            action: $1,
+            note:$2,
+            number: $3
+          });
+          yy.prev = 'play';
+        }else{
+          yy.instructions.push({
+            action: $1,
+            note:$2,
+            number: $3
+          });
+        }
+      }
+    ;
+
+bpm
+    : BPM NUMBER{
         yy.instructions.push({
           action: $1,
-          note:$2,
-          number: $3
+          number: $2
         });
       }
     ;
 
+
+
 error
-    : ERROR {return {error: 'Some error catching message.'};}
+    : ERROR {return {error: "fuck police"};}
     ;

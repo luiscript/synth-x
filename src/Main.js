@@ -47,21 +47,35 @@ class Main extends Component {
     });
   }
   handleClickButton(){
-    const { synthActions } = this.props;
+    const { synthActions, transportActions } = this.props;
 
     //parse the input text stored in this.state
     var actions = parser.parse(this.state.code);
 
     //catching errors from the parser
     if (actions.error) {
-      console.log(actions.error);
+      console.log("error", actions.error);
       return;
     }
 
     //iterating the instructions
     for (var action of actions) {
+      switch (action.action) {
+        case "play":
+          synthActions.playNote({note: action.note + action.number});
+          break;
+        case "sequence":
+          var sequence = () => {
+            synthActions.playNote({note: action.instructions[0].note + action.instructions[0].number});
+          }
+          transportActions.scheduleRepeat({callback: sequence, time: action.time, startTime: action.start});
+          transportActions.start();
+        default:
+
+      }
       //dispatching playNote action
-      synthActions.playNote({note: action.note + action.number});
+    //  synthActions.playNote({note: action.note + action.number});
+    console.log("action", action);
     }
 
 

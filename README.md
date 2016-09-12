@@ -17,15 +17,19 @@ You can generate the audioParser.js with `jison audioParser.jison`, to do this y
 
 ### Instructions supported
 
-- **play** [ **note** | **number** ]
-`play 72`
-`play D4`
-`play d3`
+- **play** [ **note** | **number** ]  
+`play 72`  
+`play D4`  
+`play d3`  
+
+- **sequence**  **time** **start** **instruction**  
+`sequence "4n" 0 play c4`  
+(repeat every quarter note and start at 0 time, play c4 note)
 
 ### Goals
 
-* Creating a live coding environment for making music in the browser that is simple to use.
-* To propose a new language that is friendly with programming students and musicians.
+* Create a live coding environment for making music in the browser that is simple to use.
+* Design a new language that is friendly with programming students and musicians.
 * Sonic boom… It has to sound amazing.
 * Flexible architecture that can be integrated with the [Flow based programming](http://www.jpaulmorrison.com/fbp/) approach to software development.
 
