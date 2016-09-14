@@ -20,6 +20,8 @@
 "play"                        return 'PLAY'
 "bpm"                         return 'BPM'
 "sequence"                    return 'SEQUENCE'
+"transport"                   return 'TRANSPORT'
+"start"                       return 'START'
 [a-g]|[A-G]                   return 'NOTE'
 [0-9]+                        return 'NUMBER'
 \"[^"]+\"                     yytext = yytext.slice(1,-1); return 'STRING'
@@ -57,6 +59,7 @@ instruction
     : play
     | bpm
     | sequence
+    | transport
     ;
 
 sequence
@@ -101,7 +104,14 @@ bpm
       }
     ;
 
-
+transport
+    : TRANSPORT START {
+        yy.instructions.push({
+          action: $1,
+          command: $2
+        });
+      }
+    ;
 
 error
     : ERROR {return {error: "fuck police"};}

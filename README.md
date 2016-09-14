@@ -26,6 +26,10 @@ You can generate the audioParser.js with `jison audioParser.jison`, to do this y
 `sequence "4n" 0 play c4`  
 (repeat every quarter note and start at 0 time, play c4 note)
 
+- **transport**  **start**
+`transport start`  
+(it's like pressing the play button in any D.A.W.)
+
 ### Goals
 
 * Create a live coding environment for making music in the browser that is simple to use.

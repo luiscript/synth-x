@@ -74,9 +74,9 @@
 var parser = (function(){
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"expressions":3,"instructions":4,"eof":5,"EOF":6,"instruction":7,"play":8,"bpm":9,"sequence":10,"SEQUENCE":11,"STRING":12,"NUMBER":13,"PLAY":14,"NOTE":15,"BPM":16,"ERROR":17,"$accept":0,"$end":1},
-terminals_: {6:"EOF",11:"SEQUENCE",12:"STRING",13:"NUMBER",14:"PLAY",15:"NOTE",16:"BPM",17:"ERROR"},
-productions_: [0,[3,2],[3,1],[5,1],[4,2],[4,0],[7,1],[7,1],[7,1],[10,3],[8,3],[9,2],[2,1]],
+symbols_: {"error":2,"expressions":3,"instructions":4,"eof":5,"EOF":6,"instruction":7,"play":8,"bpm":9,"sequence":10,"transport":11,"SEQUENCE":12,"STRING":13,"NUMBER":14,"PLAY":15,"NOTE":16,"BPM":17,"TRANSPORT":18,"START":19,"ERROR":20,"$accept":0,"$end":1},
+terminals_: {6:"EOF",12:"SEQUENCE",13:"STRING",14:"NUMBER",15:"PLAY",16:"NOTE",17:"BPM",18:"TRANSPORT",19:"START",20:"ERROR"},
+productions_: [0,[3,2],[3,1],[5,1],[4,2],[4,0],[7,1],[7,1],[7,1],[7,1],[10,3],[8,3],[9,2],[11,2],[2,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */
 /**/) {
 /* this == yyval */
@@ -94,7 +94,7 @@ case 3:
         return instructions
       
 break;
-case 9:
+case 10:
       yy.prev = 'sequence';
       yy.instructions.push({
         action: $$[$0-2],
@@ -104,7 +104,7 @@ case 9:
       });
     
 break;
-case 10:
+case 11:
         console.log("BEFORE", this.$);
         if ( yy.prev == 'sequence'){
           var index = yy.instructions.length - 1;
@@ -123,19 +123,26 @@ case 10:
         }
       
 break;
-case 11:
+case 12:
         yy.instructions.push({
           action: $$[$0-1],
           number: $$[$0]
         });
       
 break;
-case 12:return {error: "fuck police"};
+case 13:
+        yy.instructions.push({
+          action: $$[$0-1],
+          command: $$[$0]
+        });
+      
+break;
+case 14:return {error: "fuck police"};
 break;
 }
 },
-table: [{2:3,3:1,4:2,6:[2,5],7:4,8:6,9:7,10:8,11:[1,11],14:[1,9],16:[1,10],17:[1,5]},{1:[3]},{5:12,6:[1,13]},{1:[2,2]},{4:14,6:[2,5],7:4,8:6,9:7,10:8,11:[1,11],14:[1,9],16:[1,10]},{1:[2,12]},{6:[2,6],11:[2,6],14:[2,6],16:[2,6]},{6:[2,7],11:[2,7],14:[2,7],16:[2,7]},{6:[2,8],11:[2,8],14:[2,8],16:[2,8]},{15:[1,15]},{13:[1,16]},{12:[1,17]},{1:[2,1]},{1:[2,3]},{6:[2,4]},{13:[1,18]},{6:[2,11],11:[2,11],14:[2,11],16:[2,11]},{13:[1,19]},{6:[2,10],11:[2,10],14:[2,10],16:[2,10]},{6:[2,9],11:[2,9],14:[2,9],16:[2,9]}],
-defaultActions: {3:[2,2],5:[2,12],12:[2,1],13:[2,3],14:[2,4]},
+table: [{2:3,3:1,4:2,6:[2,5],7:4,8:6,9:7,10:8,11:9,12:[1,12],15:[1,10],17:[1,11],18:[1,13],20:[1,5]},{1:[3]},{5:14,6:[1,15]},{1:[2,2]},{4:16,6:[2,5],7:4,8:6,9:7,10:8,11:9,12:[1,12],15:[1,10],17:[1,11],18:[1,13]},{1:[2,14]},{6:[2,6],12:[2,6],15:[2,6],17:[2,6],18:[2,6]},{6:[2,7],12:[2,7],15:[2,7],17:[2,7],18:[2,7]},{6:[2,8],12:[2,8],15:[2,8],17:[2,8],18:[2,8]},{6:[2,9],12:[2,9],15:[2,9],17:[2,9],18:[2,9]},{16:[1,17]},{14:[1,18]},{13:[1,19]},{19:[1,20]},{1:[2,1]},{1:[2,3]},{6:[2,4]},{14:[1,21]},{6:[2,12],12:[2,12],15:[2,12],17:[2,12],18:[2,12]},{14:[1,22]},{6:[2,13],12:[2,13],15:[2,13],17:[2,13],18:[2,13]},{6:[2,11],12:[2,11],15:[2,11],17:[2,11],18:[2,11]},{6:[2,10],12:[2,10],15:[2,10],17:[2,10],18:[2,10]}],
+defaultActions: {3:[2,2],5:[2,14],14:[2,1],15:[2,3],16:[2,4]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -710,26 +717,30 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 14
+case 1:return 15
 break;
-case 2:return 16
+case 2:return 17
 break;
-case 3:return 11
+case 3:return 12
 break;
-case 4:return 15
+case 4:return 18
 break;
-case 5:return 13
+case 5:return 19
 break;
-case 6:yy_.yytext = yy_.yytext.slice(1,-1); return 12
+case 6:return 16
 break;
-case 7:return 17
+case 7:return 14
 break;
-case 8:return 6
+case 8:yy_.yytext = yy_.yytext.slice(1,-1); return 13
+break;
+case 9:return 20
+break;
+case 10:return 6
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:play\b)/,/^(?:bpm\b)/,/^(?:sequence\b)/,/^(?:[a-g]|[A-G])/,/^(?:[0-9]+)/,/^(?:"[^"]+")/,/^(?:.)/,/^(?:$)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:play\b)/,/^(?:bpm\b)/,/^(?:sequence\b)/,/^(?:transport\b)/,/^(?:start\b)/,/^(?:[a-g]|[A-G])/,/^(?:[0-9]+)/,/^(?:"[^"]+")/,/^(?:.)/,/^(?:$)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10],"inclusive":true}}
 };
 return lexer;
 })();

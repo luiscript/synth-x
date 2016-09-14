@@ -4,7 +4,7 @@ import * as synthActions from './actions/synthActions';
 import * as patchActions from './actions/patchActions';
 import * as transportActions from './actions/transportActions';
 import { connect } from 'react-redux';
-import QwertyHancock from 'qwerty-hancock';
+//import QwertyHancock from 'qwerty-hancock';
 
 
 import './App.css';
@@ -24,16 +24,16 @@ class Main extends Component {
     const { patchActions, synthActions } = this.props;
     patchActions.newPaper(this.refs.placeholder);
     synthActions.createSynth();
-    var keyboard = new QwertyHancock({
-         id: 'keyboard',
-         width: 200,
-         height: 150,
-         octaves: 1,
-         startNote: 'C3',
-         whiteNotesColour: 'white',
-         blackNotesColour: 'black',
-         hoverColour: '#f3e939'
-    });
+    // var keyboard = new QwertyHancock({
+    //      id: 'keyboard',
+    //      width: 200,
+    //      height: 150,
+    //      octaves: 1,
+    //      startNote: 'C3',
+    //      whiteNotesColour: 'white',
+    //      blackNotesColour: 'black',
+    //      hoverColour: '#f3e939'
+    // });
     // keyboard.keyDown = function (note, frequency) {
 		//     synthActions.playNote({note: note});
 		// };
@@ -58,26 +58,42 @@ class Main extends Component {
       return;
     }
 
+    // var sequence = () => {
+    //   synthActions.playNote({note: action.instructions[0].note + action.instructions[0].number});
+    // }
+
     //iterating the instructions
-    for (var action of actions) {
-      switch (action.action) {
-        case "play":
-          synthActions.playNote({note: action.note + action.number});
-          break;
-        case "sequence":
-          var sequence = () => {
+    //for (var action of actions) {
+
+    const action = actions[0];
+
+    switch (action.action) {
+      case "play":
+
+        synthActions.playNote({note: action.note + action.number});
+        break;
+
+      case "sequence":
+
+        transportActions.scheduleRepeat({
+          callback: () => {
             synthActions.playNote({note: action.instructions[0].note + action.instructions[0].number});
-          }
-          transportActions.scheduleRepeat({callback: sequence, time: action.time, startTime: action.start});
-          transportActions.start();
-        default:
+          },
+          time: action.time,
+          startTime: action.start
+        });
 
-      }
-      //dispatching playNote action
-    //  synthActions.playNote({note: action.note + action.number});
-    console.log("action", action);
+        break;
+      case "transport":
+
+        if (action.command === "start") {
+            transportActions.start();
+        }
+        break;
+        
+      default:
+        break;
     }
-
 
   }
   handleNewPatch(){
@@ -105,13 +121,12 @@ class Main extends Component {
 
     transportActions.start();
 
-    console.log("start", this.props);
   }
   handleSlider(e){
     this.setState({
       frequencyValue: e.target.value
     });
-    const { synthActions, state } = this.props;
+
     // patchActions.newPatch(this.paper);
 
     this.props.transportActions.bpm({bpm: e.target.value, ramp: 0});
