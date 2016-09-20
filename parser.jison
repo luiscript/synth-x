@@ -68,7 +68,7 @@ sequence
       yy.instructions.push({
         action: $1,
         time: $2,
-        start: $3,
+        startTime: $3,
         instructions: new Array()
       });
     }
@@ -76,7 +76,6 @@ sequence
 
 play
     : PLAY NOTE NUMBER {
-        console.log("BEFORE", $$);
         if ( yy.prev == 'sequence'){
           var index = yy.instructions.length - 1;
           yy.instructions[index].instructions.push({
@@ -114,5 +113,5 @@ transport
     ;
 
 error
-    : ERROR {return {error: "fuck police"};}
+    : ERROR {return {error: "error"};}
     ;

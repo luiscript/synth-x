@@ -50,7 +50,7 @@ export default function transport( state = initialState, action = {} ){
       }
     case types.TRANSPORTSCHEDULEREPEAT:
 
-      state.transportEvents.push(Tone.Transport.scheduleRepeat(action.callback, action.time, action.start));
+      state.transportEvents.push(Tone.Transport.scheduleRepeat(action.callback, action.time, action.startTime));
       state.state = Tone.State;
 
       return {

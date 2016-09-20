@@ -99,13 +99,12 @@ case 10:
       yy.instructions.push({
         action: $$[$0-2],
         time: $$[$0-1],
-        start: $$[$0],
+        startTime: $$[$0],
         instructions: new Array()
       });
     
 break;
 case 11:
-        console.log("BEFORE", this.$);
         if ( yy.prev == 'sequence'){
           var index = yy.instructions.length - 1;
           yy.instructions[index].instructions.push({
