@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {bindActionCreators} from 'redux';
-import * as synthActions from './actions/synthActions';
-import * as patchActions from './actions/patchActions';
-import * as transportActions from './actions/transportActions';
-import { connect } from 'react-redux';
-
-
-import './App.css';
-
+//import InstructionList from './components/InstructionList';
 var parser = require("../parser").parser;
 
 class Main extends Component {
@@ -20,20 +12,37 @@ class Main extends Component {
     };
   }
   componentDidMount() {
-    const { patchActions, synthActions } = this.props;
-    patchActions.newPaper(this.refs.placeholder);
-    synthActions.createSynth();
+
+    const { playNote, createSynth } = this.props;
+
+    createSynth();
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log("nexState", nextState);
+    //var instructions = parser.parse(nextState.code);
+
+    // if (instructions.error != null) {
+    //   console.log("error");
+    //   return false;
+    // }else{
+    //   console.log("good");
+    //   return true;
+    // }
+
+    return true;
   }
   onTextChange(e){
-    this.setState({
-      code: e.target.value
-    });
+    // this.setState({
+    //   code: e.target.value
+    // });
   }
   handleClickButton(){
-    const { synthActions, transportActions } = this.props;
+    const {  playNote } = this.props;
+
+
 
     //parse the input text stored in this.state
-    var actions = parser.parse(this.state.code);
+    var actions = parser.parse(this.refs.textAreaCode.value);
 
     //catching errors from the parser
     if (actions.error) {
@@ -46,13 +55,13 @@ class Main extends Component {
     switch (action.action) {
       case "play":
 
-        synthActions.playNote({note: action.note + action.number});
+        playNote({note: action.note + action.number});
         break;
 
       case "sequence":
         transportActions.scheduleRepeat({
           callback: () => {
-            synthActions.playNote({note: action.instructions[0].note + action.instructions[0].number});
+            playNote({note: action.instructions[0].note + action.instructions[0].number});
           },
           time: action.time,
           startTime: action.startTime
@@ -70,6 +79,9 @@ class Main extends Component {
         break;
     }
 
+    this.setState({
+      code: actions
+    });
   }
   handleSlider(e){
     this.setState({
@@ -78,24 +90,19 @@ class Main extends Component {
     this.props.transportActions.bpm({bpm: e.target.value, ramp: 0});
   }
   render() {
+    let instructions = this.state.code;
+
     return (
       <div>
-        <textarea onChange={this.onTextChange.bind(this)}>
+        <textarea ref="textAreaCode" onChange={this.onTextChange.bind(this)}>
         </textarea>
         <br />
         <button onClick={this.handleClickButton.bind(this)}>Run code</button>
         <div ref="placeholder"></div>
+        <br />
       </div>
     );
   }
 }
 
-export default connect(state => ({
-    state: state
-  }),
-  (dispatch) => ({
-    patchActions: bindActionCreators(patchActions, dispatch),
-    synthActions: bindActionCreators(synthActions, dispatch),
-    transportActions: bindActionCreators(transportActions, dispatch)
-  })
-)(Main);
+export default Main
