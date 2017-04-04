@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { Button } from 'react-toolbox/lib/button';
+import Input from 'react-toolbox/lib/input';
+import { Card, CardText } from 'react-toolbox/lib/card';
+import AppBar from 'react-toolbox/lib/app_bar';
+
 //import InstructionList from './components/InstructionList';
 var parser = require("../parser").parser;
 
@@ -7,6 +12,7 @@ class Main extends Component {
     super(props);
     this.state = {
       code: '',
+      textAreaValue: '',
       frequencyValue: 440,
       noteOn: false,
     };
@@ -38,11 +44,10 @@ class Main extends Component {
   }
   handleClickButton(){
     const {  playNote } = this.props;
-
-
+    const { textAreaValue } = this.state;
 
     //parse the input text stored in this.state
-    var actions = parser.parse(this.refs.textAreaCode.value);
+    var actions = parser.parse(textAreaValue);
 
     //catching errors from the parser
     if (actions.error) {
@@ -80,7 +85,8 @@ class Main extends Component {
     }
 
     this.setState({
-      code: actions
+      code: actions,
+      
     });
   }
   handleSlider(e){
@@ -89,7 +95,8 @@ class Main extends Component {
     });
     this.props.transportActions.bpm({bpm: e.target.value, ramp: 0});
   }
-  render() {
+  
+  defaultRender() {
     let instructions = this.state.code;
 
     return (
@@ -102,6 +109,40 @@ class Main extends Component {
         <br />
       </div>
     );
+  }
+  
+  renderWidthReactToolbox() {
+    const { textAreaValue } = this.state;
+    
+    document.body.style.background = '#eee';
+    document.body.style.margin = 0;
+    
+    return (
+      <div>
+        <AppBar title='Synth X'/>
+        <Card style={{ maxWidth: 300, margin: '16px auto' }}>
+          <CardText>
+            
+            <Input 
+              type='text' 
+              label='Write your song'
+              hint='play e5'
+              value={ textAreaValue }
+              onChange={textAreaValue => this.setState({ textAreaValue })}/>
+              
+            <Button raised primary 
+              label='Run code' 
+              onClick={this.handleClickButton.bind(this)}/>
+              
+          </CardText>
+        </Card>
+      </div>
+    );
+  }
+  
+  render() {
+    // return this.defaultRender();
+    return this.renderWidthReactToolbox();
   }
 }
 
